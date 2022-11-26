@@ -40,7 +40,7 @@ function make_curl_request( $url = null ) {
  *     uses a prefix search.
  * @param string $rank The rank of the taxon, e.g. 'genus'
  * @param boolean Set to true to restrict query to only animals
- * @return integer|null
+ * @return integer|null The ID of the taxon
  */
 function get_taxon_id( $taxonname, $rank = null, $animalsonly = false ) {
 	global $inatapi, $errors;
@@ -58,16 +58,52 @@ function get_taxon_id( $taxonname, $rank = null, $animalsonly = false ) {
     $inatdata = make_curl_request( $url );
     
     if ( $inatdata && $inatdata['results'] ) {
+    	// If there is only 1 match, return it.
 		if ( count( $inatdata['results'] ) === 1 ) {
 			return $inatdata['results'][0]['id'];
 		} else {
-			$errors[] = 'Multiple taxa beginning with the string \''.$taxonname.'\'.';
-			return null;
+			return find_exact_match( $taxonname, $inatdata['results'] );
 		}
 	} else {
 		$errors[] = 'No taxon beginning with the string \''.$taxonname.'\'.';
 		return null;
 	}
+}
+
+/**
+ * Get the name for a given taxon ID
+ * @param integer $taxonid ID of taxon to find name for
+ * @return string|null Name of the taxon
+ */
+function get_taxon_name( $taxonid ) {
+	global $inatapi, $errors;
+	$url = $inatapi . '/' . $taxonid . '?fields=name';
+	$inatdata = make_curl_request( $url );
+	if ( $inatdata && $inatdata['results'][0]['name'] ) {
+		return $inatdata['results'][0]['name'];
+	} else {
+		$errors[] = 'No name found for taxon '.$taxonid.'.';
+		return null;
+	}
+}
+
+/**
+ * Given an array of taxon IDs, find the one that exactly matches a certain taxon name
+ * @param string $taxonname Name of the taxon to find
+ * @param array $taxonids Array of taxons to search
+ * @return integer|null Taxon ID of the exact match
+ */
+function find_exact_match( $taxonname, $taxonids ) {
+	global $inatapi, $errors;
+	foreach ( $taxonids as $taxonid ) {
+		$testtaxonname = get_taxon_name( $taxonid['id'] );
+		if ( strtolower( $testtaxonname ) === strtolower( $taxonname ) ) {
+			return $taxonid['id'];
+			break;
+		}
+	}
+	$errors[] = 'Name matching failed for \''.$taxonname.'\'.';
+	return null;
 }
 
 /**
