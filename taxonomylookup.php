@@ -235,9 +235,20 @@ body {
     padding: 0.2em 0.4em;
 }
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">  
+</script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $("#lookupform").submit(function () {
+        $(".submitbtn").attr("disabled", true);
+        return true;
+    });
+});
+</script>
+</head>
 <body>
 <div id="content">
-<form action="taxonomylookup.php" method="post">
+<form id="lookupform" action="taxonomylookup.php" method="post">
 <p>
 	Species List (1 per line, max 100):<br/><textarea rows="5" cols="40" name="species"></textarea>
 </p>
@@ -245,7 +256,7 @@ body {
 	<input type="checkbox" id="animal" name="animal" <?php if ($animalsonly) echo "checked";?> value="yes">
 	<label for="animal"> Search animals only</label>
 </p>
-<input type="submit"/>
+<input class="submitbtn" type="submit" />
 </form>
 
 <?php
