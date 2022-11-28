@@ -193,7 +193,7 @@ if ( $_POST ) {
 			} else {
 				$errors[] = 'Invalid species name.';
 			}
-			sleep(1);
+			sleep(2);
 		}
 	}
 }
@@ -258,7 +258,7 @@ if ( $errors ) {
 	print( '</p>' );
 }
 if ( $verifiedspecieslist ) {
-	print( '<table class="resulttable" width="100%" border="0" cellpadding="5" cellspacing="10">' );
+	print( '<table class="resulttable" border="0" cellpadding="5" cellspacing="10">' );
 	print( '<tr><th>Species</th><th>Order</th><th>Family</th><th>Subfamily</th><th>Tribe</th><th>Subtribe</th></tr>' );
 	$x = 0;
 	foreach ( $verifiedspecieslist as $verifiedspecies ) {
