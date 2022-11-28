@@ -169,6 +169,8 @@ if ( $_POST ) {
 	// If a species name was posted, look up the taxonomy.
 	if ( $_POST['species'] ?? null ) {
 		$specieslist = explode( "\n", $_POST['species'] );
+		// Limit to 100 species.
+		$specieslist = array_slice( $specieslist, 0, 100 );
 		foreach ( $specieslist as $species ) {
 			$species = clean_taxon_name( $species );
 			// Make sure the species name is valid (at least 2 characters for the genus, a
@@ -237,7 +239,7 @@ body {
 <div id="content">
 <form action="taxonomylookup.php" method="post">
 <p>
-	Species List (carriage return separated):<br/><textarea rows="5" cols="40" name="species"></textarea>
+	Species List (1 per line, max 100):<br/><textarea rows="5" cols="40" name="species"></textarea>
 </p>
 <p>
 	<input type="checkbox" id="animal" name="animal" <?php if ($animalsonly) echo "checked";?> value="yes">
