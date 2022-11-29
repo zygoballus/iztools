@@ -2,7 +2,7 @@
 // This script is dual licensed under the MIT License and the CC0 License.
 error_reporting( E_ALL );
 ini_set( 'display_errors', 1 );
-ini_set( 'max_execution_time', 600 );
+ini_set( 'max_execution_time', 900 );
 
 $useragent = 'Taxonomy Lookup Script CMNH/1.0';
 $inatapi = 'https://api.inaturalist.org/v2/taxa';
@@ -169,8 +169,8 @@ if ( $_POST ) {
 	// If a species name was posted, look up the taxonomy.
 	if ( $_POST['species'] ?? null ) {
 		$specieslist = explode( "\n", $_POST['species'] );
-		// Limit to 100 species.
-		$specieslist = array_slice( $specieslist, 0, 100 );
+		// Limit to 50 species.
+		$specieslist = array_slice( $specieslist, 0, 50 );
 		foreach ( $specieslist as $species ) {
 			$species = clean_taxon_name( $species );
 			// Make sure the species name is valid (at least 2 characters for the genus, a
@@ -193,7 +193,9 @@ if ( $_POST ) {
 			} else {
 				$errors[] = 'Invalid species name.';
 			}
-			sleep(2);
+			if ( count( $specieslist ) > 1 ) {
+				sleep(12);
+			}
 		}
 	}
 }
@@ -249,7 +251,7 @@ $(document).ready(function () {
 <div id="content">
 <form id="lookupform" action="taxonomylookup.php" method="post">
 <p>
-	Species List (1 per line, max 100):<br/><textarea rows="5" cols="40" name="species"></textarea>
+	Species List (1 per line, max 50):<br/><textarea rows="5" cols="40" name="species"></textarea>
 </p>
 <p>
 	<input type="checkbox" id="animal" name="animal" <?php if ($animalsonly) echo "checked";?> value="yes">
