@@ -80,7 +80,7 @@ body {
 #labels {
 	white-space: nowrap;
 	font-family: monospace;
-	font-size: 8pt;
+	font-size: 6.2pt;
 	color:#000000;
 	text-align: left;
 }
@@ -122,6 +122,7 @@ if ( $errors ) {
 if ( $lines ) {
 	print( '<div id="labels">' );
 	for ( $r = 1; $r <= $rows; $r++ ) {
+		print( '<div style="margin: 2px 0;">' );
 		foreach ( $lines as $line ) {
 			$line = rtrim( $line );
 			$numSpaces = $maxLength - strlen( $line ) + 1;
@@ -134,6 +135,7 @@ if ( $lines ) {
 			}
 			print( '<br/>' );
 		}
+		print( '</div>' );
 	}
 	print( '</div>' );
 }
