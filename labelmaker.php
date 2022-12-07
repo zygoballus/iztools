@@ -80,7 +80,7 @@ body {
 #labels {
 	white-space: nowrap;
 	font-family: monospace;
-	font-size: 6.2pt;
+	font-size: 7pt;
 	color:#000000;
 	text-align: left;
 }
