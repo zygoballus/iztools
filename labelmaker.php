@@ -9,7 +9,7 @@ $errors = [];
 $lines = [];
 $lineLengths = [];
 $rows = 1;
-$pageWidth = 235;
+$pageWidth = 225;
 $label = '';
 
 /**
@@ -44,7 +44,7 @@ if ( $_POST ) {
 			$lineLengths[] = strlen( $line );
 		}
 		$maxLength = max( $lineLengths );
-		$pageWidth = intval( $_POST['pagewidth'] ) ?? 235;
+		$pageWidth = intval( $_POST['pagewidth'] ) ?? 225;
 		$labelNumber = intdiv( $pageWidth, $maxLength );
 		if ( $_POST['rows'] ?? null ) {
 			$rows = $_POST['rows'];
