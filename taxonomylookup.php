@@ -166,7 +166,7 @@ if ( $_POST ) {
 	if ( !isset( $_POST['animal'] ) ) {
 		$animalsonly = false;
 	}
-	// If a species name was posted, look up the taxonomy.
+	// If a name was posted, look up the taxonomy.
 	if ( $_POST['species'] ?? null ) {
 		$specieslist = explode( "\n", $_POST['species'] );
 		// Limit to 50 species.
@@ -187,11 +187,25 @@ if ( $_POST ) {
 						}
 						$taxonomydata[] = $ancestors;
 					}
-				} else {
-					$errors[] = 'Could not find taxon ' . $species . '.';
 				}
 			} else {
-				$errors[] = 'Invalid species name.';
+				// See if it's a genus name instead.
+				if ( preg_match( '/\w{2,}/', $species ) ) {
+					$genusid = get_taxon_id( $species, 'genus', $animalsonly );
+					if ( $genusid ) {
+						$ancestorids = get_ancestors( $genusid );
+						if ( $ancestorids ) {
+							$verifiedspecieslist[] = $species;
+							$ancestors = [];
+							foreach ( $ancestorids as $taxonid ) {
+								$ancestors[] = get_name_and_rank( $taxonid );
+							}
+							$taxonomydata[] = $ancestors;
+						}
+					}
+				} else {
+					$errors[] = 'Invalid species name.';
+				}
 			}
 			if ( count( $specieslist ) > 1 ) {
 				sleep(12);
