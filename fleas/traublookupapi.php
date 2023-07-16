@@ -48,6 +48,10 @@ if ( isset( $query['abbrev'] ) ) {
 	$query['abbrev'] = str_replace( '. ', '.', $query['abbrev'] );
 	// Replace any remaining spaces with periods
 	$query['abbrev'] = str_replace( ' ', '.', $query['abbrev'] );
+	// Make sure abbreviation ends in a period
+	if ( substr( $query['abbrev'], -1 ) !== '.' ) {
+		$query['abbrev'] .= '.';
+	}
 	$responseData = json_encode( getFlea( $query['abbrev'] ) );
 } else {
 	$strErrorDesc = "No abbreviation specified.";
