@@ -42,6 +42,12 @@ function getFlea( $abbrev ) {
 parse_str( $_SERVER['QUERY_STRING'], $query );
 
 if ( isset( $query['abbrev'] ) ) {
+	// Collapse all whitespace into single spaces
+	$query['abbrev'] = preg_replace( '/\s+/', ' ', $query['abbrev'] );
+	// Replace period-space with period
+	$query['abbrev'] = str_replace( '. ', '.', $query['abbrev'] );
+	// Replace any remaining spaces with periods
+	$query['abbrev'] = str_replace( ' ', '.', $query['abbrev'] );
 	$responseData = json_encode( getFlea( $query['abbrev'] ) );
 } else {
 	$strErrorDesc = "No abbreviation specified.";
