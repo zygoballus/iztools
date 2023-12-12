@@ -1,3 +1,4 @@
 .DS_store
 reference/
 fleas/db.conf.php
+fleas/trash/
