@@ -11,6 +11,7 @@ $accession = null;
 $id = null;
 $whereClause = '`processed` = 0 and exclude = 0';
 $row = null;
+$host = '';
 
 parse_str( $_SERVER['QUERY_STRING'], $query );
 if ( isset( $query['id'] ) && is_numeric( $query['id'] ) ) {
@@ -27,7 +28,6 @@ $result = mysqli_query( $link, "SELECT * FROM `traubdata` WHERE " . $whereClause
 if ( $result ) {
 	$row = mysqli_fetch_array($result);
 	// Set the host to the most granular taxon.
-	$host = null;
 	if ( isset( $row['host genus'] ) && $row['host genus'] ) {
 		if ( isset( $row['host species'] ) && $row['host species'] ) {
 			$host = $row['host genus'] . ' ' . $row['host species'];
@@ -41,6 +41,8 @@ if ( $result ) {
 	} else if( isset( $row['host class'] ) && $row['host class'] ) {
 		$host = $row['host class'];
 	}
+} else {
+	$errors[] = "No records found.";
 }
 
 // See if form was submitted.
@@ -117,6 +119,14 @@ table.logtable th.rightborder, table.logtable td.rightborder {
 </tr>
 </table>
 <?php
+if ( $errors ) {
+	print( '<p id="errors">' );
+	print( 'Errors:<br/>' );
+	foreach ( $errors as $error ) {
+		print( $error . '<br/>' );
+	}
+	print( '</p>' );
+}
 if ( $row ) {
 	print( '<div class="traublog">' );
 	print( '<div style="text-align: left; color: black;">Record ' . $row['id'] . ' of 17885&nbsp;&nbsp;&nbsp;&nbsp;Accession: ' . $row['accession'] . '</div><br>' );
