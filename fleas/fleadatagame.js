@@ -1,3 +1,5 @@
+var records = 1;
+
 function abbrevlookup( input ) {
 	$.getJSON( 'traublookupapi.php', {
 		abbrev: input
@@ -11,8 +13,10 @@ function abbrevlookup( input ) {
 			if ( data.status ) {
 				$( "#fleaname" ).append( '<br><span class="status">Name status: ' + data.status.toLowerCase() + '</span>' );
 			}
+			$( "p#fillbuttons" ).show();
 		} else {
 			$( "#fleaname" ).html( '' );
+			$( "p#fillbuttons" ).hide();
 		}
 	});
 }
@@ -27,23 +31,26 @@ function namelookup( input ) {
 			if ( data.validName ) {
 				$( "#fleaname" ).append( '<br><span class="status">Valid name: ' + data.validName + '</span>' );
 			}
+			$( "p#fillbuttons" ).show();
 		} else {
-			console.log( "Z" );
 			$( "#fleaname" ).html( '' );
+			$( "p#fillbuttons" ).hide();
 		}
 	});
 }
 
 function addrow( number ) {
-	outputrow = '<tr id="'+number+'">';
+	outputrow = '<div class="record"><table id="output" border="0" cellpadding="5" cellspacing="0"><tr id="'+number+'">';
 	outputrow += '<td><input type="text" name="fleadata[0][\'host\']"/></td>';
 	outputrow += '<td><input type="text" name="fleadata[0][\'date\']" size="12"/></td>';
 	outputrow += '<td><input type="text" class="country" name="fleadata[0][\'country\']"/></td>';
 	outputrow += '<td><input type="text" name="fleadata[0][\'locality\']" size="50"/></td>';
 	outputrow += '<td><input type="text" name="fleadata[0][\'flea\']" size="50"/></td>';
 	outputrow += '<td><input type="text" name="fleadata[0][\'quant\']" size="3"/></td>';
-	outputrow += '</tr>';
-	$( "#output" ).append( outputrow );
+	outputrow += '</tr></table></div>';
+	$( "#records" ).append( outputrow );
+	records++;
+	$( "p#fillbuttons" ).append( '<input type="submit" value="Fill '+records+'" onclick="fillrow('+records+');return false;" class="fill"/>' );
 }
 
 $( "input.country" ).autocomplete({
