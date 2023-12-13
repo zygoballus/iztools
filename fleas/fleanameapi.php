@@ -5,7 +5,6 @@ ini_set( 'display_errors', 1 );
 
 /* Connect to the database. */
 include 'db.conf.php';
-$link = mysqli_connect($host, $user, $pass, $dbname);
 
 $strErrorDesc = '';
 
