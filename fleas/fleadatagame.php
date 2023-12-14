@@ -115,10 +115,17 @@ table.logtable th.rightborder, table.logtable td.rightborder {
 label {
 	font-size: 80%;
 }
-div.record {
+table.record {
+	width: 100%;
 	background-color: #E3E3E3;
 	margin-top: 1em;
 	margin-bottom: 1em;
+}
+td.recordlabel {
+	font-size: 32px;
+	vertical-align: middle;
+	text-align: center;
+	padding: 15px;
 }
 </style>
 <link rel="stylesheet" href="jquery-ui.min.css">
@@ -166,9 +173,7 @@ Flea Name: <input type="text" name="name" id="name" size="25" autocomplete="off"
 <p id="fleaname" style="margin: 12px 0;"></p>
 </td>
 <td valign="top">
-<p id="fillbuttons" style="margin: 12px 0; display: none;">
-<input type="submit" value="Fill 1" onclick="fillrow(1);return false;" class="fill"/>
-</p>
+<p id="fillbuttons" style="margin: 12px 0; display: none;"><input type="submit" value="Fill 1" onclick="filldata(0);return false;" class="fill"/></p>
 </td>
 </tr>
 </table>
@@ -176,25 +181,30 @@ Flea Name: <input type="text" name="name" id="name" size="25" autocomplete="off"
 
 ?>
 <div id="records">
-<div class="record">
-<table class="output" border="0" cellpadding="5" cellspacing="0">
-<tr>
-	<td><label>Host:</label><br/><input type="text" name="fleadata[0]['host']" size="25" value="<?=$host?>"/></td>
-	<td><label>Flea taxon (only 1):</label><br/><input type="text" name="fleadata[0]['sciname']" size="35"/></td>
-	<td><label>Taxon authority:</label><br/><input type="text" name="fleadata[0]['scientificnameauthorship']" size="25"/></td>
-	<td><label>Sex:</label><br/><input type="text" name="fleadata[0]['sex']" size="10"/></td>
-	<td><label>Quant.:</label><br/><input type="text" name="fleadata[0]['individualcount']" size="3"/></td>
-	<td><label>Date:</label><br/><input type="date" name="fleadata[0]['date']" size="10" value="<?=$row['date']?>"/></td>
-</tr>
-<table>
-<table class="output" border="0" cellpadding="5" cellspacing="0">
-<tr>
-	<td><label>Country:</label><br/><input type="text" class="country" name="fleadata[0]['country']" value="<?=$row['country']?>" size="18"/></td>
-	<td><label>State/Province:</label><br/><input type="text" class="country" name="fleadata[0]['stateprovince']" value="<?=$row['stateprovince']?>" size="20"/></td>
-	<td><label>Locality:</label><br/><input type="text" name="fleadata[0]['locality']" size="90" value="<?=$row['locality']?>"/></td>
-</tr>
+<table class="record" id="record0">
+	<tr>
+		<td rowspan="2" class="recordlabel">1</td>
+		<td>
+			<table class="output" border="0" cellpadding="5" cellspacing="0">
+				<tr>
+					<td><label>Host:</label><br/><input type="text" name="fleadata[0][host]" size="25" value="<?=$host?>"/></td>
+					<td><label>Flea taxon (only 1):</label><br/><input type="text" name="fleadata[0][sciname]" size="35"/></td>
+					<td><label>Taxon authority:</label><br/><input type="text" name="fleadata[0][scientificnameauthorship]" size="25"/></td>
+					<td><label>Sex:</label><br/><input type="text" name="fleadata[0][sex]" size="10"/></td>
+					<td><label>Quant.:</label><br/><input type="text" name="fleadata[0][individualcount]" size="3"/></td>
+					<td><label>Date:</label><br/><input type="date" name="fleadata[0][date]" size="10" value="<?=$row['date']?>"/></td>
+				</tr>
+			<table>
+			<table class="output" border="0" cellpadding="5" cellspacing="0">
+				<tr>
+					<td><label>Country:</label><br/><input type="text" class="country" name="fleadata[0][country]" size="18" value="<?=$row['country']?>"/></td>
+					<td><label>State/Province:</label><br/><input type="text" class="country" name="fleadata[0][stateprovince]" size="20" value="<?=$row['stateprovince']?>"/></td>
+					<td><label>Locality:</label><br/><input type="text" name="fleadata[0][locality]" size="90" value="<?=$row['locality']?>"/></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
 </table>
-</div>
 </div>
 &nbsp;<br>
 <input type="submit" value="+" onclick="addrow();return false;"/>

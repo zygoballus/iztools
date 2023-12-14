@@ -6,7 +6,7 @@ function abbrevlookup( input ) {
 	})
 	.done( function( data ) {
 		if ( data ) {
-			$( "#fleaname" ).html( data.abbrev + ': ' + data.name + ' ' + data.authority );
+			$( "#fleaname" ).html( data.abbrev + ': <span id="sciname">' + data.name + '</span> <span id="author">' + data.authority + '</span>' );
 			if ( data.notes ) {
 				$( "#fleaname" ).append( '<br><span class="notes">Notes: ' + data.notes + '</span>' );
 			}
@@ -27,7 +27,7 @@ function namelookup( input ) {
 	})
 	.done( function( data ) {
 		if ( data ) {
-			$( "#fleaname" ).html( data.name + ' ' + data.authority + '<br><span class="status">Name status: ' + data.status + '</span>' );
+			$( "#fleaname" ).html( '<span id="sciname">' + data.name + '</span> <span id="author">' + data.authority + '</span><br><span class="status">Name status: ' + data.status + '</span>' );
 			if ( data.validName ) {
 				$( "#fleaname" ).append( '<br><span class="status">Valid name: ' + data.validName + '</span>' );
 			}
@@ -39,18 +39,41 @@ function namelookup( input ) {
 	});
 }
 
-function addrow( number ) {
-	outputrow = '<div class="record"><table id="output" border="0" cellpadding="5" cellspacing="0"><tr id="'+number+'">';
-	outputrow += '<td><input type="text" name="fleadata[0][\'host\']"/></td>';
-	outputrow += '<td><input type="text" name="fleadata[0][\'date\']" size="12"/></td>';
-	outputrow += '<td><input type="text" class="country" name="fleadata[0][\'country\']"/></td>';
-	outputrow += '<td><input type="text" name="fleadata[0][\'locality\']" size="50"/></td>';
-	outputrow += '<td><input type="text" name="fleadata[0][\'flea\']" size="50"/></td>';
-	outputrow += '<td><input type="text" name="fleadata[0][\'quant\']" size="3"/></td>';
-	outputrow += '</tr></table></div>';
-	$( "#records" ).append( outputrow );
+function addrow() {
+	arrayindex = records;
 	records++;
-	$( "p#fillbuttons" ).append( '<input type="submit" value="Fill '+records+'" onclick="fillrow('+records+');return false;" class="fill"/>' );
+	outputrecord = `<table class="record" id="record`+records+`">
+	<tr>
+		<td rowspan="2" class="recordlabel">`+records+`</td>
+		<td>
+			<table class="output" border="0" cellpadding="5" cellspacing="0">
+				<tr>
+					<td><label>Host:</label><br/><input type="text" name="fleadata[`+arrayindex+`][host]" size="25" value=""/></td>
+					<td><label>Flea taxon (only 1):</label><br/><input type="text" name="fleadata[`+arrayindex+`][sciname]" size="35"/></td>
+					<td><label>Taxon authority:</label><br/><input type="text" name="fleadata[`+arrayindex+`][scientificnameauthorship]" size="25"/></td>
+					<td><label>Sex:</label><br/><input type="text" name="fleadata[`+arrayindex+`][sex]" size="10"/></td>
+					<td><label>Quant.:</label><br/><input type="text" name="fleadata[`+arrayindex+`][individualcount]" size="3"/></td>
+					<td><label>Date:</label><br/><input type="date" name="fleadata[`+arrayindex+`][date]" size="10" value=""/></td>
+				</tr>
+			<table>
+			<table class="output" border="0" cellpadding="5" cellspacing="0">
+				<tr>
+					<td><label>Country:</label><br/><input type="text" class="country" name="fleadata[`+arrayindex+`][country]" size="18" value=""/></td>
+					<td><label>State/Province:</label><br/><input type="text" class="country" name="fleadata[`+arrayindex+`][stateprovince]" size="20" value=""/></td>
+					<td><label>Locality:</label><br/><input type="text" name="fleadata[`+arrayindex+`][locality]" size="90" value=""/></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>`;
+	$( "#records" ).append( outputrecord );
+	$( "p#fillbuttons" ).append( '<input type="submit" value="Fill '+records+'" onclick="filldata('+arrayindex+');return false;" class="fill"/>' );
+}
+
+function filldata( arrayindex ) {
+	console.log(arrayindex);
+	$( "input[name='fleadata["+arrayindex+"][sciname]']" ).val( $( "#sciname" ).text() );
+	$( "input[name='fleadata["+arrayindex+"][scientificnameauthorship]']" ).val( $( "#author" ).text() );
 }
 
 $( "input.country" ).autocomplete({
