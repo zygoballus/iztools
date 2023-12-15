@@ -48,19 +48,19 @@ function addrow() {
 		<td>
 			<table class="output" border="0" cellpadding="5" cellspacing="0">
 				<tr>
-					<td><label>Host:</label><br/><input type="text" name="fleadata[`+arrayindex+`][host]" size="25" value=""/></td>
-					<td><label>Flea taxon (only 1):</label><br/><input type="text" name="fleadata[`+arrayindex+`][sciname]" size="35"/></td>
-					<td><label>Taxon authority:</label><br/><input type="text" name="fleadata[`+arrayindex+`][scientificnameauthorship]" size="25"/></td>
-					<td><label>Sex:</label><br/><input type="text" name="fleadata[`+arrayindex+`][sex]" size="10"/></td>
-					<td><label>Quant.:</label><br/><input type="text" name="fleadata[`+arrayindex+`][individualcount]" size="3"/></td>
-					<td><label>Date:</label><br/><input type="date" name="fleadata[`+arrayindex+`][date]" size="10" value=""/></td>
+					<td><label>Host</label><br/><input type="text" name="fleadata[`+arrayindex+`][host]" size="25" value=""/></td>
+					<td><label>Flea taxon (only 1)</label><br/><input type="text" name="fleadata[`+arrayindex+`][sciname]" size="35"/></td>
+					<td><label>Taxon author <a href="#" onclick="dwcDoc('scientificNameAuthorship')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[`+arrayindex+`][scientificnameauthorship]" size="25"/></td>
+					<td><label>Sex <a href="#" onclick="dwcDoc('sex')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[`+arrayindex+`][sex]" size="10"/></td>
+					<td><label>Quant.</label><br/><input type="text" name="fleadata[`+arrayindex+`][individualcount]" size="3"/></td>
+					<td><label>Date</label><br/><input type="date" name="fleadata[`+arrayindex+`][date]" size="10" value=""/></td>
 				</tr>
 			<table>
 			<table class="output" border="0" cellpadding="5" cellspacing="0">
 				<tr>
-					<td><label>Country:</label><br/><input type="text" class="country" name="fleadata[`+arrayindex+`][country]" size="18" value=""/></td>
-					<td><label>State/Province:</label><br/><input type="text" name="fleadata[`+arrayindex+`][stateprovince]" size="20" value=""/></td>
-					<td><label>Locality:</label><br/><input type="text" name="fleadata[`+arrayindex+`][locality]" size="90" value=""/></td>
+					<td><label>Country <a href="#" onclick="dwcDoc('country')" class="info">&#9432;</a></label><br/><input type="text" class="country" name="fleadata[`+arrayindex+`][country]" size="18" value=""/></td>
+					<td><label>State/Province <a href="#" onclick="dwcDoc('stateProvince')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[`+arrayindex+`][stateprovince]" size="20" value=""/></td>
+					<td><label>Locality <a href="#" onclick="dwcDoc('locality')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[`+arrayindex+`][locality]" size="90" value=""/></td>
 				</tr>
 			</table>
 		</td>
@@ -79,6 +79,14 @@ function filldata( arrayindex ) {
 	console.log(arrayindex);
 	$( "input[name='fleadata["+arrayindex+"][sciname]']" ).val( $( "#sciname" ).text() );
 	$( "input[name='fleadata["+arrayindex+"][scientificnameauthorship]']" ).val( $( "#author" ).text() );
+}
+
+function dwcDoc( dcTag ) {
+	//dwcWindow=open("https://symbiota.org/symbiota-occurrence-data-fields-2/#"+dcTag,"dwcaid","width=1250,height=300,left=20,top=20,scrollbars=1");
+	dwcWindow=open("https://dwc.tdwg.org/terms/#dwc:"+dcTag,"dwcaid","width=1250,height=300,left=20,top=20,scrollbars=1");
+	if(dwcWindow.opener == null) dwcWindow.opener = self;
+	dwcWindow.focus();
+	return false;
 }
 
 $( "input.country" ).autocomplete({

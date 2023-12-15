@@ -127,6 +127,9 @@ td.recordlabel {
 	text-align: center;
 	padding: 15px;
 }
+a.info {
+	text-decoration: none;
+}
 </style>
 <link rel="stylesheet" href="jquery-ui.min.css">
 <script src="jquery.min.js"></script>
@@ -187,19 +190,19 @@ Flea Name: <input type="text" name="name" id="name" size="25" autocomplete="off"
 		<td>
 			<table class="output" border="0" cellpadding="5" cellspacing="0">
 				<tr>
-					<td><label>Host:</label><br/><input type="text" name="fleadata[0][host]" size="25" value="<?=$host?>"/></td>
-					<td><label>Flea taxon (only 1):</label><br/><input type="text" name="fleadata[0][sciname]" size="35"/></td>
-					<td><label>Taxon authority:</label><br/><input type="text" name="fleadata[0][scientificnameauthorship]" size="25"/></td>
-					<td><label>Sex:</label><br/><input type="text" name="fleadata[0][sex]" size="10"/></td>
-					<td><label>Quant.:</label><br/><input type="text" name="fleadata[0][individualcount]" size="3"/></td>
-					<td><label>Date:</label><br/><input type="date" name="fleadata[0][date]" size="10" value="<?=$row['date']?>"/></td>
+					<td><label>Host</label><br/><input type="text" name="fleadata[0][host]" size="25" value="<?=$host?>"/></td>
+					<td><label>Flea taxon (only 1)</label><br/><input type="text" name="fleadata[0][sciname]" size="35"/></td>
+					<td><label>Taxon author <a href="#" onclick="dwcDoc('scientificNameAuthorship')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][scientificnameauthorship]" size="25"/></td>
+					<td><label>Sex <a href="#" onclick="dwcDoc('sex')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][sex]" size="10"/></td>
+					<td><label>Quant.</label><br/><input type="text" name="fleadata[0][individualcount]" size="3"/></td>
+					<td><label>Date</label><br/><input type="date" name="fleadata[0][date]" size="10" value="<?=$row['date']?>"/></td>
 				</tr>
 			<table>
 			<table class="output" border="0" cellpadding="5" cellspacing="0">
 				<tr>
-					<td><label>Country:</label><br/><input type="text" class="country" name="fleadata[0][country]" size="18" value="<?=$row['country']?>"/></td>
-					<td><label>State/Province:</label><br/><input type="text" name="fleadata[0][stateprovince]" size="20" value="<?=$row['stateprovince']?>"/></td>
-					<td><label>Locality:</label><br/><input type="text" name="fleadata[0][locality]" size="90" value="<?=$row['locality']?>"/></td>
+					<td><label>Country <a href="#" onclick="dwcDoc('country')" class="info">&#9432;</a></label><br/><input type="text" class="country" name="fleadata[0][country]" size="18" value="<?=$row['country']?>"/></td>
+					<td><label>State/Province <a href="#" onclick="dwcDoc('stateProvince')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][stateprovince]" size="20" value="<?=$row['stateprovince']?>"/></td>
+					<td><label>Locality <a href="#" onclick="dwcDoc('locality')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][locality]" size="90" value="<?=$row['locality']?>"/></td>
 				</tr>
 			</table>
 		</td>
@@ -207,7 +210,7 @@ Flea Name: <input type="text" name="name" id="name" size="25" autocomplete="off"
 </table>
 </div>
 &nbsp;<br>
-<input type="submit" value="+" onclick="addrow();return false;"/>
+<input type="submit" value="Add Record" onclick="addrow();return false;"/> <input type="submit" value="Save Records"/><br>
 <script src="fleadatagame.js"></script>
 </div>
 </body>
