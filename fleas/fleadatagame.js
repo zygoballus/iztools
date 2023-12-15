@@ -59,7 +59,7 @@ function addrow() {
 			<table class="output" border="0" cellpadding="5" cellspacing="0">
 				<tr>
 					<td><label>Country:</label><br/><input type="text" class="country" name="fleadata[`+arrayindex+`][country]" size="18" value=""/></td>
-					<td><label>State/Province:</label><br/><input type="text" class="country" name="fleadata[`+arrayindex+`][stateprovince]" size="20" value=""/></td>
+					<td><label>State/Province:</label><br/><input type="text" name="fleadata[`+arrayindex+`][stateprovince]" size="20" value=""/></td>
 					<td><label>Locality:</label><br/><input type="text" name="fleadata[`+arrayindex+`][locality]" size="90" value=""/></td>
 				</tr>
 			</table>
@@ -67,6 +67,11 @@ function addrow() {
 	</tr>
 </table>`;
 	$( "#records" ).append( outputrecord );
+	$( "input[name='fleadata["+arrayindex+"][host]']" ).val( $( "input[name='fleadata[0][host]']" ).val() );
+	$( "input[name='fleadata["+arrayindex+"][date]']" ).val( $( "input[name='fleadata[0][date]']" ).val() );
+	$( "input[name='fleadata["+arrayindex+"][country]']" ).val( $( "input[name='fleadata[0][country]']" ).val() );
+	$( "input[name='fleadata["+arrayindex+"][stateprovince]']" ).val( $( "input[name='fleadata[0][stateprovince]']" ).val() );
+	$( "input[name='fleadata["+arrayindex+"][locality]']" ).val( $( "input[name='fleadata[0][locality]']" ).val() );
 	$( "p#fillbuttons" ).append( '<input type="submit" value="Fill '+records+'" onclick="filldata('+arrayindex+');return false;" class="fill"/>' );
 }
 

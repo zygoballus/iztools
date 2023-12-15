@@ -198,7 +198,7 @@ Flea Name: <input type="text" name="name" id="name" size="25" autocomplete="off"
 			<table class="output" border="0" cellpadding="5" cellspacing="0">
 				<tr>
 					<td><label>Country:</label><br/><input type="text" class="country" name="fleadata[0][country]" size="18" value="<?=$row['country']?>"/></td>
-					<td><label>State/Province:</label><br/><input type="text" class="country" name="fleadata[0][stateprovince]" size="20" value="<?=$row['stateprovince']?>"/></td>
+					<td><label>State/Province:</label><br/><input type="text" name="fleadata[0][stateprovince]" size="20" value="<?=$row['stateprovince']?>"/></td>
 					<td><label>Locality:</label><br/><input type="text" name="fleadata[0][locality]" size="90" value="<?=$row['locality']?>"/></td>
 				</tr>
 			</table>
