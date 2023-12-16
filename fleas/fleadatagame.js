@@ -39,7 +39,12 @@ function namelookup( input ) {
 	});
 }
 
-function addrow() {
+function closeRecord( recordNumber ) {
+	$( "table#record"+recordNumber ).remove();
+	$( "#fill"+recordNumber ).remove();
+}
+
+function addRecord() {
 	arrayindex = records;
 	records++;
 	outputrecord = `<table class="record" id="record`+records+`">
@@ -48,22 +53,29 @@ function addrow() {
 		<td>
 			<table class="output" border="0" cellpadding="5" cellspacing="0">
 				<tr>
-					<td><label>Host</label><br/><input type="text" name="fleadata[`+arrayindex+`][host]" size="25" value=""/></td>
+					<td><label>Host</label><br/><input type="text" name="fleadata[`+arrayindex+`][host]" size="25"/></td>
 					<td><label>Flea taxon (only 1)</label><br/><input type="text" name="fleadata[`+arrayindex+`][sciname]" size="35"/></td>
 					<td><label>Taxon author <a href="#" onclick="dwcDoc('scientificNameAuthorship')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[`+arrayindex+`][scientificnameauthorship]" size="25"/></td>
 					<td><label>Sex <a href="#" onclick="dwcDoc('sex')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[`+arrayindex+`][sex]" size="10"/></td>
-					<td><label>Quant.</label><br/><input type="text" name="fleadata[`+arrayindex+`][individualcount]" size="3"/></td>
-					<td><label>Date</label><br/><input type="date" name="fleadata[`+arrayindex+`][date]" size="10" value=""/></td>
+					<td><label>Quant.</label><br/><input type="text" name="fleadata[`+arrayindex+`][individualcount]" size="4"/></td>
 				</tr>
 			<table>
 			<table class="output" border="0" cellpadding="5" cellspacing="0">
 				<tr>
-					<td><label>Country <a href="#" onclick="dwcDoc('country')" class="info">&#9432;</a></label><br/><input type="text" class="country" name="fleadata[`+arrayindex+`][country]" size="18" value=""/></td>
-					<td><label>State/Province <a href="#" onclick="dwcDoc('stateProvince')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[`+arrayindex+`][stateprovince]" size="20" value=""/></td>
-					<td><label>Locality <a href="#" onclick="dwcDoc('locality')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[`+arrayindex+`][locality]" size="90" value=""/></td>
+					<td><label>Date</label><br/><input type="date" name="fleadata[`+arrayindex+`][date]" size="10"/></td>
+					<td><label>Country <a href="#" onclick="dwcDoc('country')" class="info">&#9432;</a></label><br/><input type="text" class="country" name="fleadata[`+arrayindex+`][country]" size="20"/></td>
+					<td><label>State/Province <a href="#" onclick="dwcDoc('stateProvince')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[`+arrayindex+`][stateprovince]" size="24"/></td>
+					<td><label>Elevation <a href="#" onclick="dwcDoc('minimumElevationInMeters')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[`+arrayindex+`][elevation]" size="8"/></td>
+					<td><label>Associated Collectors</label><br/><input type="text" name="fleadata[`+arrayindex+`][collectors]" size="30"/></td>
+				</tr>
+			</table>
+			<table class="output" border="0" cellpadding="5" cellspacing="0">
+				<tr>
+					<td><label>Locality <a href="#" onclick="dwcDoc('locality')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[`+arrayindex+`][locality]" size="114"/></td>
 				</tr>
 			</table>
 		</td>
+		<td rowspan="3" class="recordclose"><a class="close" onclick="closeRecord(`+records+`);return false;">×</a></td>
 	</tr>
 </table>`;
 	$( "#records" ).append( outputrecord );
@@ -71,8 +83,10 @@ function addrow() {
 	$( "input[name='fleadata["+arrayindex+"][date]']" ).val( $( "input[name='fleadata[0][date]']" ).val() );
 	$( "input[name='fleadata["+arrayindex+"][country]']" ).val( $( "input[name='fleadata[0][country]']" ).val() );
 	$( "input[name='fleadata["+arrayindex+"][stateprovince]']" ).val( $( "input[name='fleadata[0][stateprovince]']" ).val() );
+	$( "input[name='fleadata["+arrayindex+"][elevation]']" ).val( $( "input[name='fleadata[0][elevation]']" ).val() );
+	$( "input[name='fleadata["+arrayindex+"][collectors]']" ).val( $( "input[name='fleadata[0][collectors]']" ).val() );
 	$( "input[name='fleadata["+arrayindex+"][locality]']" ).val( $( "input[name='fleadata[0][locality]']" ).val() );
-	$( "p#fillbuttons" ).append( '<input type="submit" value="Fill '+records+'" onclick="filldata('+arrayindex+');return false;" class="fill"/>' );
+	$( "p#fillbuttons" ).append( '<input type="submit" value="Fill '+records+'" onclick="filldata('+arrayindex+');return false;" class="fill" id="fill'+records+'"/>' );
 }
 
 function filldata( arrayindex ) {

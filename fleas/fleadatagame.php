@@ -127,6 +127,21 @@ td.recordlabel {
 	text-align: center;
 	padding: 15px;
 }
+td.recordclose {
+	padding: 10px 15px;
+	font-size: 20px;
+	vertical-align: top;
+	text-align: right;
+	font-weight: bold;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    filter: alpha(opacity=30);
+    opacity: .3;
+}
+a.close {
+	cursor: default;
+}
 a.info {
 	text-decoration: none;
 }
@@ -176,7 +191,7 @@ Flea Name: <input type="text" name="name" id="name" size="25" autocomplete="off"
 <p id="fleaname" style="margin: 12px 0;"></p>
 </td>
 <td valign="top">
-<p id="fillbuttons" style="margin: 12px 0; display: none;"><input type="submit" value="Fill 1" onclick="filldata(0);return false;" class="fill"/></p>
+<p id="fillbuttons" style="margin: 12px 0; display: none;"><input type="submit" value="Fill 1" onclick="filldata(0);return false;" class="fill" id="fill1"/></p>
 </td>
 </tr>
 </table>
@@ -186,7 +201,7 @@ Flea Name: <input type="text" name="name" id="name" size="25" autocomplete="off"
 <div id="records">
 <table class="record" id="record0">
 	<tr>
-		<td rowspan="2" class="recordlabel">1</td>
+		<td rowspan="3" class="recordlabel">1</td>
 		<td>
 			<table class="output" border="0" cellpadding="5" cellspacing="0">
 				<tr>
@@ -194,23 +209,30 @@ Flea Name: <input type="text" name="name" id="name" size="25" autocomplete="off"
 					<td><label>Flea taxon (only 1)</label><br/><input type="text" name="fleadata[0][sciname]" size="35"/></td>
 					<td><label>Taxon author <a href="#" onclick="dwcDoc('scientificNameAuthorship')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][scientificnameauthorship]" size="25"/></td>
 					<td><label>Sex <a href="#" onclick="dwcDoc('sex')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][sex]" size="10"/></td>
-					<td><label>Quant.</label><br/><input type="text" name="fleadata[0][individualcount]" size="3"/></td>
-					<td><label>Date</label><br/><input type="date" name="fleadata[0][date]" size="10" value="<?=$row['date']?>"/></td>
+					<td><label>Quant.</label><br/><input type="text" name="fleadata[0][individualcount]" size="4"/></td>
 				</tr>
 			<table>
 			<table class="output" border="0" cellpadding="5" cellspacing="0">
 				<tr>
-					<td><label>Country <a href="#" onclick="dwcDoc('country')" class="info">&#9432;</a></label><br/><input type="text" class="country" name="fleadata[0][country]" size="18" value="<?=$row['country']?>"/></td>
-					<td><label>State/Province <a href="#" onclick="dwcDoc('stateProvince')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][stateprovince]" size="20" value="<?=$row['stateprovince']?>"/></td>
-					<td><label>Locality <a href="#" onclick="dwcDoc('locality')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][locality]" size="90" value="<?=$row['locality']?>"/></td>
+					<td><label>Date</label><br/><input type="date" name="fleadata[0][date]" size="10" value="<?=$row['date']?>"/></td>
+					<td><label>Country <a href="#" onclick="dwcDoc('country')" class="info">&#9432;</a></label><br/><input type="text" class="country" name="fleadata[0][country]" size="20" value="<?=$row['country']?>"/></td>
+					<td><label>State/Province <a href="#" onclick="dwcDoc('stateProvince')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][stateprovince]" size="24" value="<?=$row['stateprovince']?>"/></td>
+					<td><label>Elevation <a href="#" onclick="dwcDoc('minimumElevationInMeters')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][elevation]" size="8"/></td>
+					<td><label>Associated Collectors</label><br/><input type="text" name="fleadata[0][collectors]" size="30"/></td>
+				</tr>
+			</table>
+			<table class="output" border="0" cellpadding="5" cellspacing="0">
+				<tr>
+					<td><label>Locality <a href="#" onclick="dwcDoc('locality')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][locality]" size="114" value="<?=$row['locality']?>"/></td>
 				</tr>
 			</table>
 		</td>
+		<td rowspan="3" class="recordclose">&nbsp;</td>
 	</tr>
 </table>
 </div>
 &nbsp;<br>
-<input type="submit" value="Add Record" onclick="addrow();return false;"/> <input type="submit" value="Save Records"/><br>
+<input type="submit" value="Add Record" onclick="addRecord();return false;"/> <input type="submit" value="Save Records"/><br>
 <script src="fleadatagame.js"></script>
 </div>
 </body>
