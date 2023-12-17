@@ -57,95 +57,7 @@ if ( $_POST ) {
 <link rel="icon" href="fleaassets/favicon-32.png" sizes="32x32">
 <link rel="icon" href="fleaassets/favicon-180.png" sizes="180x180">
 <link rel="icon" href="fleaassets/favicon-192.png" sizes="192x192">
-<style type="text/css">
-body {
-	font-family: "Trebuchet MS", Verdana, sans-serif;
-	color:#777777;
-	background: #FFFFFF;
-	}
-#content {
-	margin: 1em auto;
-	padding: 0 2em;
-	text-align: center;
-	max-width: 1200px;
-	}
-#errors {
-	margin: 1em;
-	color: #FF6666;
-	font-weight: bold;
-	font-size: 15pt;
-	}
-#fleaname {
-	font-size: 14pt;
-	line-height: 18pt;
-	color: black;
-	padding: 0 2em;
-}
-.notes, .status {
-	font-size: 11pt;
-	line-height: 16pt;
-	color: #475DC1;
-}
-.traublog {
-	padding: 1em;
-	background-image: url("fleaassets/paper-texture.jpg");
-	background-color: #F1E0C2;
-	font-family: monospace;
-}
-form.lookup {
-	font-size: 11pt;
-	margin: 16px 0;
-}
-input.fill {
-	margin: 3px;
-}
-table {
-	border-collapse: collapse;
-	color: black;
-}
-table.logtable {
-	width: 100%;
-}
-table.logtable th, table.logtable td {
-	padding: 0.2em 1em;
-}
-table.logtable th.rightborder, table.logtable td.rightborder {
-	border-right: 1px solid black;
-}
-label {
-	font-size: 80%;
-}
-table.record {
-	width: 100%;
-	background-color: #E3E3E3;
-	margin-top: 1em;
-	margin-bottom: 1em;
-}
-td.recordlabel {
-	font-size: 32px;
-	vertical-align: middle;
-	text-align: center;
-	padding: 15px;
-}
-td.recordclose {
-	padding: 10px 15px;
-	font-size: 20px;
-	vertical-align: top;
-	text-align: right;
-	font-weight: bold;
-    line-height: 1;
-    color: #000;
-    text-shadow: 0 1px 0 #fff;
-    filter: alpha(opacity=30);
-    opacity: .3;
-}
-a.close {
-	cursor: default;
-}
-a.info {
-	text-decoration: none;
-}
-</style>
+<link rel="stylesheet" href="fleadatagame.css">
 <link rel="stylesheet" href="jquery-ui.min.css">
 <script src="jquery.min.js"></script>
 <script src="jquery-ui.min.js"></script>
@@ -203,7 +115,7 @@ Flea Name: <input type="text" name="name" id="name" size="25" autocomplete="off"
 	<tr>
 		<td rowspan="3" class="recordlabel">1</td>
 		<td>
-			<table class="output" border="0" cellpadding="5" cellspacing="0">
+			<table class="output" border="0" cellspacing="0">
 				<tr>
 					<td><label>Host</label><br/><input type="text" name="fleadata[0][host]" size="25" value="<?=$host?>"/></td>
 					<td><label>Flea taxon (only 1)</label><br/><input type="text" name="fleadata[0][sciname]" size="35"/></td>
@@ -211,17 +123,17 @@ Flea Name: <input type="text" name="name" id="name" size="25" autocomplete="off"
 					<td><label>Sex <a href="#" onclick="dwcDoc('sex')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][sex]" size="10"/></td>
 					<td><label>Quant.</label><br/><input type="text" name="fleadata[0][individualcount]" size="4"/></td>
 				</tr>
-			<table>
-			<table class="output" border="0" cellpadding="5" cellspacing="0">
+			</table>
+			<table class="output" border="0" cellspacing="0">
 				<tr>
 					<td><label>Date</label><br/><input type="date" name="fleadata[0][date]" size="10" value="<?=$row['date']?>"/></td>
-					<td><label>Country <a href="#" onclick="dwcDoc('country')" class="info">&#9432;</a></label><br/><input type="text" class="country" name="fleadata[0][country]" size="20" value="<?=$row['country']?>"/></td>
+					<td><label>Country <a href="#" onclick="dwcDoc('country')" class="info">&#9432;</a></label><br/><input type="text" class="country" name="fleadata[0][country]" size="21" value="<?=$row['country']?>"/></td>
 					<td><label>State/Province <a href="#" onclick="dwcDoc('stateProvince')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][stateprovince]" size="24" value="<?=$row['stateprovince']?>"/></td>
 					<td><label>Elevation <a href="#" onclick="dwcDoc('minimumElevationInMeters')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][elevation]" size="8"/></td>
 					<td><label>Associated Collectors</label><br/><input type="text" name="fleadata[0][collectors]" size="30"/></td>
 				</tr>
 			</table>
-			<table class="output" border="0" cellpadding="5" cellspacing="0">
+			<table class="output" border="0" cellspacing="0">
 				<tr>
 					<td><label>Locality <a href="#" onclick="dwcDoc('locality')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][locality]" size="114" value="<?=$row['locality']?>"/></td>
 				</tr>
@@ -231,8 +143,7 @@ Flea Name: <input type="text" name="name" id="name" size="25" autocomplete="off"
 	</tr>
 </table>
 </div>
-&nbsp;<br>
-<input type="submit" value="Add Record" onclick="addRecord();return false;"/> <input type="submit" value="Save Records"/><br>
+<input type="submit" class="bottom" value="Add Record" onclick="addRecord();return false;"/> <input type="submit" class="bottom" value="Save Records"/><br>
 <script src="fleadatagame.js"></script>
 </div>
 </body>

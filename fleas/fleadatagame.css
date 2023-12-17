@@ -1,0 +1,95 @@
+body {
+	font-family: "Trebuchet MS", Verdana, sans-serif;
+	color:#777777;
+	background: #FFFFFF;
+}
+#content {
+	margin: 1em auto;
+	padding: 0 2em;
+	text-align: center;
+	max-width: 1200px;
+}
+#errors {
+	margin: 1em;
+	color: #FF6666;
+	font-weight: bold;
+	font-size: 15pt;
+}
+#fleaname {
+	font-size: 14pt;
+	line-height: 18pt;
+	color: black;
+	padding: 0 2em;
+}
+.notes, .status {
+	font-size: 11pt;
+	line-height: 16pt;
+	color: #475DC1;
+}
+.traublog {
+	padding: 1em;
+	background-image: url("fleaassets/paper-texture.jpg");
+	background-color: #F1E0C2;
+	font-family: monospace;
+}
+form.lookup {
+	font-size: 11pt;
+	margin: 16px 0;
+}
+inputinput.fill, input.bottom {
+	margin: 3px;
+}
+table {
+	border-collapse: collapse;
+	color: black;
+}
+table.logtable {
+	width: 100%;
+}
+table.logtable th, table.logtable td {
+	padding: 0.2em 1em;
+}
+table.logtable th.rightborder, table.logtable td.rightborder {
+	border-right: 1px solid black;
+}
+label {
+	font-size: 80%;
+}
+div.records {
+	margin-bottom: 1em;
+}
+table.record {
+	width: 100%;
+	background-color: #E3E3E3;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+td.recordlabel {
+	font-size: 32px;
+	vertical-align: middle;
+	text-align: center;
+	padding: 15px;
+}
+td.recordclose {
+	padding: 5px 10px;
+	font-size: 20px;
+	vertical-align: top;
+	text-align: right;
+	font-weight: bold;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    filter: alpha(opacity=30);
+    opacity: .3;
+}
+table.output td {
+	padding: 4px 5px;
+}
+a.close {
+	cursor: default;
+}
+a.info {
+	text-decoration: none;
+	font-size: 85%;
+	vertical-align: text-top;
+}
