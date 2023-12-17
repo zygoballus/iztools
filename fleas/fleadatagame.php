@@ -9,11 +9,14 @@ include 'db.conf.php';
 $errors = [];
 $accession = null;
 $id = null;
-$whereClause = '`processed` = 0 and exclude = 0';
+$previd = 0;
+$nextid = 0;
 $row = null;
 $host = '';
 
 parse_str( $_SERVER['QUERY_STRING'], $query );
+
+$whereClause = '`processed` = 0 and exclude = 0';
 if ( isset( $query['id'] ) && is_numeric( $query['id'] ) ) {
 	$id = $query['id'];
 	$whereClause = "`id` = " . $id;
@@ -41,18 +44,48 @@ if ( $result ) {
 	} else if( isset( $row['host class'] ) && $row['host class'] ) {
 		$host = $row['host class'];
 	}
+	$prevresult = mysqli_query( $link, "SELECT MAX(`id`) AS id FROM `traubdata` WHERE `id` < {$row['id']} AND `processed`=0 AND `exclude`=0 AND `bad locality`=0;" );
+	if ( $prevresult ) {
+		$prevrow = mysqli_fetch_array( $prevresult );
+		$previd = $prevrow['id'];
+	}
+	$nextresult = mysqli_query( $link, "SELECT MIN(`id`) AS id FROM `traubdata` WHERE `id` > {$row['id']} AND `processed`=0 AND `exclude`=0 AND `bad locality`=0;" );
+	if ( $nextresult ) {
+		$nextrow = mysqli_fetch_array( $nextresult );
+		$nextid = $nextrow['id'];
+	}
 } else {
 	$errors[] = "No records found.";
 }
 
+if ( isset( $query['action'] ) && $query['action'] == 'prev' && $previd ) {
+	header( "Location: fleadatagame.php?id=" . $previd );
+}
+if ( isset( $query['action'] ) && $query['action'] == 'skip' && $nextid ) {
+	header( "Location: fleadatagame.php?id=" . $nextid );
+}
+
 // See if form was submitted.
-if ( $_POST ) {
+if ( $_POST && $row['id'] ) {
 	// Process POST data.
 	foreach ( $_POST['fleadata'] as $flea ) {
 		$query = "INSERT INTO `traubdataprocessed` (`originalid`, `accession`, `host`, `date`, `locality`, `country`, `stateprovince`, `sciname`, `scientificnameauthorship`, `sex`, `individualcount`, `player`) VALUES ('{$row['id']}', '{$row['accession']}', '{$flea['host']}', '{$flea['date']}', '{$flea['locality']}', '{$flea['country']}', '{$flea['stateprovince']}', '{$flea['sciname']}', '{$flea['scientificnameauthorship']}', '{$flea['sex']}', '{$flea['individualcount']}', '1');";
 		$result2 = mysqli_query( $link, $query );
 		if ( $result2 ) {
-			// Go to next record
+			$query = "UPDATE `traubdata` SET `processed`=1 WHERE `id`={$row['id']} LIMIT 1;";
+			$result3 = mysqli_query( $link, $query );
+				if ( $result3 ) {
+					if ( $nextid ) {
+						header( "Location: fleadatagame.php?id=" . $nextid );
+					} elseif ( $previd ) {
+						header( "Location: fleadatagame.php?id=" . $previd );
+					} else {
+						header( "Location: done.php" );
+					}
+				} else {
+					$errors[] = "Updating original record failed.";
+					$errors[] = mysqli_error( $link );
+				}
 		} else {
 			$errors[] = "Inserting new records into database failed.";
 			$errors[] = mysqli_error( $link );
@@ -75,9 +108,17 @@ if ( $_POST ) {
 <div id="content">
 <table border="0" cellpadding="5" cellspacing="10" width="100%">
 <tr>
-<td style="text-align:left;"><a href="fleadatagame.php?id=<?=$row['id']?>&action=prev"><< Prev</a></td>
+<td style="text-align:left;" width="80">
+<?php
+if ( $previd ) print( '<a href="fleadatagame.php?id=' . $row['id'] . '&action=prev"><< Prev</a>' );
+?>
+</td>
 <td><h2 style="text-align:center;">Flea Data</h2></td>
-<td style="text-align:right;"><a href="fleadatagame.php?id=<?=$row['id']?>&action=skip">Skip >></a></td>
+<td style="text-align:right;" width="80">
+<?php
+if ( $nextid ) print( '<a href="fleadatagame.php?id=' . $row['id'] . '&action=skip">Skip >></a>' );
+?>
+</td>
 </tr>
 </table>
 <?php
