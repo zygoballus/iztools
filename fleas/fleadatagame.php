@@ -48,6 +48,16 @@ if ( $result ) {
 // See if form was submitted.
 if ( $_POST ) {
 	// Process POST data.
+	foreach ( $_POST['fleadata'] as $flea ) {
+		$query = "INSERT INTO `traubdataprocessed` (`originalid`, `accession`, `host`, `date`, `locality`, `country`, `stateprovince`, `sciname`, `scientificnameauthorship`, `sex`, `individualcount`, `player`) VALUES ('{$row['id']}', '{$row['accession']}', '{$flea['host']}', '{$flea['date']}', '{$flea['locality']}', '{$flea['country']}', '{$flea['stateprovince']}', '{$flea['sciname']}', '{$flea['scientificnameauthorship']}', '{$flea['sex']}', '{$flea['individualcount']}', '1');";
+		$result2 = mysqli_query( $link, $query );
+		if ( $result2 ) {
+			// Go to next record
+		} else {
+			$errors[] = "Inserting new records into database failed.";
+			$errors[] = mysqli_error( $link );
+		}
+	}
 }
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -65,9 +75,9 @@ if ( $_POST ) {
 <div id="content">
 <table border="0" cellpadding="5" cellspacing="10" width="100%">
 <tr>
-<td style="text-align:left;"><a href=""><< Prev</a></td>
+<td style="text-align:left;"><a href="fleadatagame.php?id=<?=$row['id']?>&action=prev"><< Prev</a></td>
 <td><h2 style="text-align:center;">Flea Data</h2></td>
-<td style="text-align:right;"><a href="">Skip >></a></td>
+<td style="text-align:right;"><a href="fleadatagame.php?id=<?=$row['id']?>&action=skip">Skip >></a></td>
 </tr>
 </table>
 <?php
@@ -92,12 +102,12 @@ if ( $row ) {
 <table id="lookups" border="0" cellpadding="5" cellspacing="10">
 <tr>
 <td valign="top">
-<form action="fleadatagame.php" method="post" autocomplete="off" class="lookup">
+<div class="lookup">
 Flea Abbreviation: <input type="text" name="abbrev" id="abbrev" size="15" autocomplete="off"/> <input type="submit" value="Lookup" onclick="abbrevlookup(document.getElementById('abbrev').value);return false;"/>
-</form>
-<form action="fleadatagame.php" method="post" autocomplete="off" class="lookup">
+</div>
+<div class="lookup">
 Flea Name: <input type="text" name="name" id="name" size="25" autocomplete="off"/> <input type="submit" value="Lookup" onclick="namelookup(document.getElementById('name').value);return false;"/>
-</form>
+</div>
 </td>
 <td valign="top">
 <p id="fleaname" style="margin: 12px 0;"></p>
@@ -107,9 +117,7 @@ Flea Name: <input type="text" name="name" id="name" size="25" autocomplete="off"
 </td>
 </tr>
 </table>
-<?php
-
-?>
+<form action="fleadatagame.php?id=<?=$row['id']?>" method="post" autocomplete="off">
 <div id="records">
 <table class="record" id="record0">
 	<tr>
@@ -144,6 +152,7 @@ Flea Name: <input type="text" name="name" id="name" size="25" autocomplete="off"
 </table>
 </div>
 <input type="submit" class="bottom" value="Add Record" onclick="addRecord();return false;"/> <input type="submit" class="bottom" value="Save Records"/><br>
+</form>
 <script src="fleadatagame.js"></script>
 </div>
 </body>

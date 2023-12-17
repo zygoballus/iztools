@@ -32,11 +32,11 @@ body {
 	background-color: #F1E0C2;
 	font-family: monospace;
 }
-form.lookup {
+div.lookup {
 	font-size: 11pt;
 	margin: 16px 0;
 }
-inputinput.fill, input.bottom {
+input.fill, input.bottom {
 	margin: 3px;
 }
 table {
