@@ -97,7 +97,7 @@ if ( $row['id'] ) {
 		$updatesuccess = true;
 		// Process POST data.
 		foreach ( $_POST['fleadata'] as $flea ) {
-			$query = "INSERT INTO `traubdataprocessed` (`originalid`, `accession`, `host`, `date`, `locality`, `country`, `stateprovince`, `sciname`, `scientificnameauthorship`, `sex`, `individualcount`, `player`) VALUES ('{$row['id']}', '{$row['accession']}', '{$flea['host']}', '{$flea['date']}', '{$flea['locality']}', '{$flea['country']}', '{$flea['stateprovince']}', '{$flea['sciname']}', '{$flea['scientificnameauthorship']}', '{$flea['sex']}', '{$flea['individualcount']}', {$playerid});";
+			$query = "INSERT INTO `traubdataprocessed` (`originalid`, `accession`, `host`, `date`, `locality`, `country`, `stateprovince`, `elevation`, `associatedcollectors`, `sciname`, `scientificnameauthorship`, `sex`, `individualcount`, `player`) VALUES ('{$row['id']}', '{$row['accession']}', '{$flea['host']}', '{$flea['date']}', '{$flea['locality']}', '{$flea['country']}', '{$flea['stateprovince']}', '{$flea['elevation']}', '{$flea['associatedcollectors']}', '{$flea['sciname']}', '{$flea['scientificnameauthorship']}', '{$flea['sex']}', '{$flea['individualcount']}', {$playerid});";
 			$result2 = mysqli_query( $link, $query );
 			if ( !$result2 ) {
 				$updatesuccess = false;
@@ -218,22 +218,22 @@ Flea Name: <input type="text" name="name" id="name" size="25" autocomplete="off"
 					<td><label>Host</label><br/><input type="text" name="fleadata[0][host]" size="25" value="<?=$host?>"/></td>
 					<td><label>Flea taxon (only 1)</label><br/><input type="text" name="fleadata[0][sciname]" size="35"/></td>
 					<td><label>Taxon author <a href="#" onclick="dwcDoc('scientificNameAuthorship')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][scientificnameauthorship]" size="25"/></td>
-					<td><label>Sex <a href="#" onclick="dwcDoc('sex')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][sex]" size="10"/></td>
+					<td><label>Sex <a href="#" onclick="dwcDoc('sex')" class="info">&#9432;</a></label><br/><select name="fleadata[0][sex]"><option value="">&nbsp;</option><option value="male">male</option><option value="female">female</option><option value="male | female">male | female</option></select></td>
 					<td><label>Quant.</label><br/><input type="text" name="fleadata[0][individualcount]" size="4"/></td>
 				</tr>
 			</table>
 			<table class="output" border="0" cellspacing="0">
 				<tr>
 					<td><label>Date</label><br/><input type="date" name="fleadata[0][date]" size="10" value="<?=$row['date']?>"/></td>
-					<td><label>Country <a href="#" onclick="dwcDoc('country')" class="info">&#9432;</a></label><br/><input type="text" class="country" name="fleadata[0][country]" size="21" value="<?=$row['country']?>"/></td>
+					<td><label>Country <a href="#" onclick="dwcDoc('country')" class="info">&#9432;</a></label><br/><input type="text" class="country" name="fleadata[0][country]" size="24" value="<?=$row['country']?>"/></td>
 					<td><label>State/Province <a href="#" onclick="dwcDoc('stateProvince')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][stateprovince]" size="24" value="<?=$row['stateprovince']?>"/></td>
 					<td><label>Elevation <a href="#" onclick="dwcDoc('minimumElevationInMeters')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][elevation]" size="8"/></td>
-					<td><label>Associated Collectors</label><br/><input type="text" name="fleadata[0][collectors]" size="30"/></td>
+					<td><label>Associated Collectors</label><br/><input type="text" name="fleadata[0][associatedcollectors]" size="30"/></td>
 				</tr>
 			</table>
 			<table class="output" border="0" cellspacing="0">
 				<tr>
-					<td><label>Locality <a href="#" onclick="dwcDoc('locality')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][locality]" size="114" value="<?=$row['locality']?>"/></td>
+					<td><label>Locality <a href="#" onclick="dwcDoc('locality')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][locality]" size="116" value="<?=$row['locality']?>"/></td>
 				</tr>
 			</table>
 		</td>
