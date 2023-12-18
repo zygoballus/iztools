@@ -21,9 +21,9 @@ if ( isset( $query['player'] ) && is_numeric( $query['player'] ) ) {
 	$playerresult = mysqli_query( $link, "SELECT * FROM `players` WHERE `id` = " . $query['player'] . " LIMIT 1;" );
 	if ( $playerresult ) {
 		$row = mysqli_fetch_array($playerresult);
-		setcookie( 'playerid', $row['id'], 0, "/iztools/fleas/" );
-		setcookie( 'playername', $row['name'], 0, "/iztools/fleas/" );
-		setcookie( 'playerscore', $row['score1'], 0, "/iztools/fleas/" );
+		setcookie( 'playerid', $row['id'], 0, '/' );
+		setcookie( 'playername', $row['name'], 0, '/' );
+		setcookie( 'playerscore', $row['score1'], 0, '/' );
 		$playerid = $row['id'];
 		$playername = $row['name'];
 		$playerscore = $row['score1'];
