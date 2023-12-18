@@ -54,24 +54,24 @@ function addRecord() {
 			<table class="output" border="0" cellspacing="0">
 				<tr>
 					<td><label>Host</label><br/><input type="text" name="fleadata[`+arrayindex+`][host]" size="25"/></td>
-					<td><label>Flea taxon (only 1)</label><br/><input type="text" name="fleadata[`+arrayindex+`][sciname]" size="35"/></td>
-					<td><label>Taxon author <a href="#" onclick="dwcDoc('scientificNameAuthorship')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[`+arrayindex+`][scientificnameauthorship]" size="25"/></td>
-					<td><label>Sex <a href="#" onclick="dwcDoc('sex')" class="info">&#9432;</a></label><br/><select name="fleadata[`+arrayindex+`][sex]"><option value="">&nbsp;</option><option value="male">male</option><option value="female">female</option><option value="male | female">male | female</option></select></td>
-					<td><label>Quant.</label><br/><input type="text" name="fleadata[`+arrayindex+`][individualcount]" size="4"/></td>
+					<td><label>Flea taxon (only 1)</label><br/><input type="text" name="fleadata[`+arrayindex+`][sciname]" size="34"/></td>
+					<td><label>Taxon author <a href="#" tabindex="-1" onclick="dwcDoc('scientificNameAuthorship')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[`+arrayindex+`][scientificnameauthorship]" size="25"/></td>
+					<td><label>Sex</label><br/><select name="fleadata[`+arrayindex+`][sex]"><option value="">&nbsp;</option><option value="male">male</option><option value="female">female</option><option value="male | female">male | female</option></select></td>
+					<td><label>Quant.</label><br/><input type="number" name="fleadata[`+arrayindex+`][individualcount]" style="width: 44px;"/></td>
 				</tr>
 			<table>
 			<table class="output" border="0" cellspacing="0">
 				<tr>
-					<td><label>Date</label><br/><input type="date" name="fleadata[`+arrayindex+`][date]" size="10"/></td>
-					<td><label>Country <a href="#" onclick="dwcDoc('country')" class="info">&#9432;</a></label><br/><input type="text" class="country" name="fleadata[`+arrayindex+`][country]" size="24"/></td>
-					<td><label>State/Province <a href="#" onclick="dwcDoc('stateProvince')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[`+arrayindex+`][stateprovince]" size="24"/></td>
-					<td><label>Elevation <a href="#" onclick="dwcDoc('minimumElevationInMeters')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[`+arrayindex+`][elevation]" size="8"/></td>
-					<td><label>Associated Collectors</label><br/><input type="text" name="fleadata[`+arrayindex+`][associatedcollectors]" size="30"/></td>
+					<td><label>Date</label><br/><input type="text" name="fleadata[`+arrayindex+`][date]" size="11"/></td>
+					<td><label>Country <a href="#" tabindex="-1" onclick="dwcDoc('country')" class="info">&#9432;</a></label><br/><input type="text" class="country" name="fleadata[`+arrayindex+`][country]" size="25"/></td>
+					<td><label>State/Province <a href="#" tabindex="-1" onclick="dwcDoc('stateProvince')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[`+arrayindex+`][stateprovince]" size="25"/></td>
+					<td><label>Elevation <a href="#" tabindex="-1" onclick="dwcDoc('minimumElevationInMeters')" class="info">&#9432;</a></label><br/><input type="number" name="fleadata[`+arrayindex+`][elevation]" style="width: 72px;"/></td>
+					<td><label>Associated Collectors</label><br/><input type="text" name="fleadata[`+arrayindex+`][associatedcollectors]" size="32"/></td>
 				</tr>
 			</table>
 			<table class="output" border="0" cellspacing="0">
 				<tr>
-					<td><label>Locality <a href="#" onclick="dwcDoc('locality')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[`+arrayindex+`][locality]" size="116"/></td>
+					<td><label>Locality <a href="#" tabindex="-1" onclick="dwcDoc('locality')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[`+arrayindex+`][locality]" size="116"/></td>
 				</tr>
 			</table>
 		</td>

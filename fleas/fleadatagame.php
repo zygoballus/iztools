@@ -95,37 +95,56 @@ if ( $row['id'] ) {
 	// See if form was submitted.
 	if ( $_POST ) {
 		$updatesuccess = true;
-		// Process POST data.
-		foreach ( $_POST['fleadata'] as $flea ) {
-			$query = "INSERT INTO `traubdataprocessed` (`originalid`, `accession`, `host`, `date`, `locality`, `country`, `stateprovince`, `elevation`, `associatedcollectors`, `sciname`, `scientificnameauthorship`, `sex`, `individualcount`, `player`) VALUES ('{$row['id']}', '{$row['accession']}', '{$flea['host']}', '{$flea['date']}', '{$flea['locality']}', '{$flea['country']}', '{$flea['stateprovince']}', '{$flea['elevation']}', '{$flea['associatedcollectors']}', '{$flea['sciname']}', '{$flea['scientificnameauthorship']}', '{$flea['sex']}', '{$flea['individualcount']}', {$playerid});";
+		if ( $_POST['submitbutton'] == 'Insufficient Data' ) {
+			$query = "UPDATE `traubdata` SET `processed`=1,`exclude`=1, `player`={$playerid} WHERE `id`={$row['id']} LIMIT 1;";
 			$result2 = mysqli_query( $link, $query );
 			if ( !$result2 ) {
 				$updatesuccess = false;
-				$errors[] = "Inserting processed record failed.";
+				$errors[] = "Updating original record failed.";
 				$errors[] = mysqli_error( $link );
+			}
+		} else {
+			$insertsuccess = true;
+			// Process POST data.
+			foreach ( $_POST['fleadata'] as $flea ) {
+				if ( $flea['date'] == '' ) {
+					$date = 'NULL';
+				} else {
+					$date = "'" . $flea['date'] . "'";
+				}
+				$query = "INSERT INTO `traubdataprocessed` (`originalid`, `accession`, `host`, `date`, `locality`, `country`, `stateprovince`, `elevation`, `associatedcollectors`, `sciname`, `scientificnameauthorship`, `sex`, `individualcount`, `player`) VALUES ('{$row['id']}', '{$row['accession']}', '{$flea['host']}', {$date}, '{$flea['locality']}', '{$flea['country']}', '{$flea['stateprovince']}', '{$flea['elevation']}', '{$flea['associatedcollectors']}', '{$flea['sciname']}', '{$flea['scientificnameauthorship']}', '{$flea['sex']}', '{$flea['individualcount']}', {$playerid});";
+				$result2 = mysqli_query( $link, $query );
+				if ( !$result2 ) {
+					$insertsuccess = false;
+					$updatesuccess = false;
+					$errors[] = "Inserting processed record failed.";
+					$errors[] = mysqli_error( $link );
+				}
+			}
+			if ( $insertsuccess ) {
+				$query = "UPDATE `traubdata` SET `processed`=1, `player`={$playerid} WHERE `id`={$row['id']} LIMIT 1;";
+				$result3 = mysqli_query( $link, $query );
+				if ( !$result3 ) {
+					$updatesuccess = false;
+					$errors[] = "Updating original record failed.";
+					$errors[] = mysqli_error( $link );
+				}
 			}
 		}
 		if ( $updatesuccess ) {
-			$query = "UPDATE `traubdata` SET `processed`=1, `player`={$playerid} WHERE `id`={$row['id']} LIMIT 1;";
-			$result3 = mysqli_query( $link, $query );
-			if ( $result3 ) {
-				$query = "UPDATE `players` SET `score1`=" . ++$playerscore . " WHERE `id`=" . $playerid . " LIMIT 1;";
-				$result4 = mysqli_query( $link, $query );
-				setcookie( 'playerscore', $playerscore, 0, "/iztools/fleas/" );
-				if ( $result4 ) {
-					if ( $nextid ) {
-						header( "Location: fleadatagame.php?id=" . $nextid );
-					} elseif ( $previd ) {
-						header( "Location: fleadatagame.php?id=" . $previd );
-					} else {
-						header( "Location: done.php" );
-					}
+			$query = "UPDATE `players` SET `score1`=" . ++$playerscore . " WHERE `id`=" . $playerid . " LIMIT 1;";
+			$result4 = mysqli_query( $link, $query );
+			setcookie( 'playerscore', $playerscore, 0, "/iztools/fleas/" );
+			if ( $result4 ) {
+				if ( $nextid ) {
+					header( "Location: fleadatagame.php?id=" . $nextid );
+				} elseif ( $previd ) {
+					header( "Location: fleadatagame.php?id=" . $previd );
 				} else {
-					$errors[] = "Updating player record failed.";
-					$errors[] = mysqli_error( $link );
+					header( "Location: done.php" );
 				}
 			} else {
-				$errors[] = "Updating original record failed.";
+				$errors[] = "Updating player record failed.";
 				$errors[] = mysqli_error( $link );
 			}
 		}
@@ -216,24 +235,24 @@ Flea Name: <input type="text" name="name" id="name" size="25" autocomplete="off"
 			<table class="output" border="0" cellspacing="0">
 				<tr>
 					<td><label>Host</label><br/><input type="text" name="fleadata[0][host]" size="25" value="<?=$host?>"/></td>
-					<td><label>Flea taxon (only 1)</label><br/><input type="text" name="fleadata[0][sciname]" size="35"/></td>
-					<td><label>Taxon author <a href="#" onclick="dwcDoc('scientificNameAuthorship')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][scientificnameauthorship]" size="25"/></td>
-					<td><label>Sex <a href="#" onclick="dwcDoc('sex')" class="info">&#9432;</a></label><br/><select name="fleadata[0][sex]"><option value="">&nbsp;</option><option value="male">male</option><option value="female">female</option><option value="male | female">male | female</option></select></td>
-					<td><label>Quant.</label><br/><input type="text" name="fleadata[0][individualcount]" size="4"/></td>
+					<td><label>Flea taxon (only 1)</label><br/><input type="text" name="fleadata[0][sciname]" size="34"/></td>
+					<td><label>Taxon author <a href="#" tabindex="-1" onclick="dwcDoc('scientificNameAuthorship')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][scientificnameauthorship]" size="25"/></td>
+					<td><label>Sex</label><br/><select name="fleadata[0][sex]"><option value="">&nbsp;</option><option value="male">male</option><option value="female">female</option><option value="male | female">male | female</option></select></td>
+					<td><label>Quant.</label><br/><input type="number" name="fleadata[0][individualcount]" style="width: 44px;"/></td>
 				</tr>
 			</table>
 			<table class="output" border="0" cellspacing="0">
 				<tr>
-					<td><label>Date</label><br/><input type="date" name="fleadata[0][date]" size="10" value="<?=$row['date']?>"/></td>
-					<td><label>Country <a href="#" onclick="dwcDoc('country')" class="info">&#9432;</a></label><br/><input type="text" class="country" name="fleadata[0][country]" size="24" value="<?=$row['country']?>"/></td>
-					<td><label>State/Province <a href="#" onclick="dwcDoc('stateProvince')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][stateprovince]" size="24" value="<?=$row['stateprovince']?>"/></td>
-					<td><label>Elevation <a href="#" onclick="dwcDoc('minimumElevationInMeters')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][elevation]" size="8"/></td>
-					<td><label>Associated Collectors</label><br/><input type="text" name="fleadata[0][associatedcollectors]" size="30"/></td>
+					<td><label>Date</label><br/><input type="text" name="fleadata[0][date]" size="11" value="<?=$row['date']?>"/></td>
+					<td><label>Country <a href="#" tabindex="-1" onclick="dwcDoc('country')" class="info">&#9432;</a></label><br/><input type="text" class="country" name="fleadata[0][country]" size="25" value="<?=$row['country']?>"/></td>
+					<td><label>State/Province <a href="#" tabindex="-1" onclick="dwcDoc('stateProvince')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][stateprovince]" size="25" value="<?=$row['stateprovince']?>"/></td>
+					<td><label>Elevation <a href="#" tabindex="-1" onclick="dwcDoc('minimumElevationInMeters')" class="info">&#9432;</a></label><br/><input type="number" name="fleadata[0][elevation]" style="width: 72px;"/></td>
+					<td><label>Associated Collectors</label><br/><input type="text" name="fleadata[0][associatedcollectors]" size="32"/></td>
 				</tr>
 			</table>
 			<table class="output" border="0" cellspacing="0">
 				<tr>
-					<td><label>Locality <a href="#" onclick="dwcDoc('locality')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][locality]" size="116" value="<?=$row['locality']?>"/></td>
+					<td><label>Locality <a href="#" tabindex="-1" onclick="dwcDoc('locality')" class="info">&#9432;</a></label><br/><input type="text" name="fleadata[0][locality]" size="116" value="<?=$row['locality']?>"/></td>
 				</tr>
 			</table>
 		</td>
@@ -241,7 +260,7 @@ Flea Name: <input type="text" name="name" id="name" size="25" autocomplete="off"
 	</tr>
 </table>
 </div>
-<input type="submit" class="bottom" value="Add Record" onclick="addRecord();return false;"/> <input type="submit" class="bottom" value="Save Records"/><br>
+<input type="submit" class="bottom" value="Add Record" onclick="addRecord();return false;"/> <input name="submitbutton" type="submit" class="bottom" value="Insufficient Data"/> <input name="submitbutton" type="submit" class="bottom" value="Save Records"/><br>
 </form>
 <script src="fleadatagame.js"></script>
 </div>
