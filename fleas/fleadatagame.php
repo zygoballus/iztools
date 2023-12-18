@@ -134,7 +134,7 @@ if ( $row['id'] ) {
 		if ( $updatesuccess ) {
 			$query = "UPDATE `players` SET `score1`=" . ++$playerscore . " WHERE `id`=" . $playerid . " LIMIT 1;";
 			$result4 = mysqli_query( $link, $query );
-			setcookie( 'playerscore', $playerscore, 0, "/" );
+			setcookie( 'playerscore', $playerscore, 0, '/' );
 			if ( $result4 ) {
 				if ( $nextid ) {
 					header( "Location: fleadatagame.php?id=" . $nextid );
