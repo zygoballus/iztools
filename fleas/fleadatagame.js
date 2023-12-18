@@ -90,9 +90,9 @@ function addRecord() {
 }
 
 function filldata( arrayindex ) {
-	console.log(arrayindex);
 	$( "input[name='fleadata["+arrayindex+"][sciname]']" ).val( $( "#sciname" ).text() );
 	$( "input[name='fleadata["+arrayindex+"][scientificnameauthorship]']" ).val( $( "#author" ).text() );
+	$( "input[name='submitbutton']" ).removeAttr( 'disabled' );
 }
 
 function dwcDoc( dcTag ) {
@@ -1667,3 +1667,9 @@ $.ui.autocomplete.filter = function (array, term) {
         return matcher.test(value.label || value.value || value);
     });
 };
+// Enable save button when first flea taxon field is filled in
+$( 'input[name="fleadata[0][sciname]"]' ).change( function() {
+	if ( $(this).val() ) {
+		$( "input[name='submitbutton']" ).removeAttr( 'disabled' );
+	}
+});

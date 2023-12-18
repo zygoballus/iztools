@@ -260,7 +260,13 @@ Flea Name: <input type="text" name="name" id="name" size="25" autocomplete="off"
 	</tr>
 </table>
 </div>
-<input type="submit" class="bottom" value="Add Record" onclick="addRecord();return false;"/> <input name="submitbutton" type="submit" class="bottom" value="Insufficient Data"/> <input name="submitbutton" type="submit" class="bottom" value="Save Records"/><br>
+<?php
+if ( !$row['processed'] ) {
+	print( '<input type="submit" class="bottom" value="Add Record" onclick="addRecord();return false;"/> <input name="submitbutton" type="submit" class="bottom" value="Insufficient Data"/> <input name="submitbutton" type="submit" class="bottom" value="Save Records" disabled/><br>' );
+} else {
+	print( 'Already processed.<br>');
+}
+?>
 </form>
 <script src="fleadatagame.js"></script>
 </div>
