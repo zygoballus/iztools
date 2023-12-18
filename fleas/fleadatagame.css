@@ -2,9 +2,10 @@ body {
 	font-family: "Trebuchet MS", Verdana, sans-serif;
 	color:#777777;
 	background: #FFFFFF;
+	margin: 0;
 }
 #content {
-	margin: 1em auto;
+	margin: 0 auto 1em auto;
 	padding: 0 2em;
 	text-align: center;
 	max-width: 1200px;
@@ -32,6 +33,11 @@ body {
 	background-color: #F1E0C2;
 	font-family: monospace;
 }
+div.title {
+	text-align: center;
+	font-size: 18pt;
+	font-weight: bold;
+}
 div.lookup {
 	font-size: 11pt;
 	margin: 16px 0;
@@ -42,6 +48,17 @@ input.fill, input.bottom {
 table {
 	border-collapse: collapse;
 	color: black;
+}
+table#playerinfo {
+	background-color: #004799;
+	color: white;
+}
+table#playerinfo a:link, table#playerinfo a:visited, table#playerinfo a:hover, table#playerinfo a:active {
+	color: #FAFA33;
+}
+table.players {
+	margin-left: auto;
+	margin-right: auto;
 }
 table.logtable {
 	width: 100%;
@@ -92,4 +109,7 @@ a.info {
 	text-decoration: none;
 	font-size: 85%;
 	vertical-align: text-top;
+}
+form#addplayer {
+	margin: 1em 0;
 }

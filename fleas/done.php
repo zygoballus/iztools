@@ -7,13 +7,13 @@
 <link rel="icon" href="fleaassets/favicon-192.png" sizes="192x192">
 <link rel="stylesheet" href="fleadatagame.css">
 <body>
-<div id="content">
+<div id="content" style="text-align: center; margin-top: 1em;">
 <table border="0" cellpadding="5" cellspacing="10" width="100%">
 <tr>
 <td><h2 style="text-align:center;">Flea Data</h2></td>
 </tr>
 </table>
-<div style="font-size: 25px; font-weight: bold; text-align: center;">
+<div style="font-size: 25px; font-weight: bold;">
 No more records to process!
 </div>
 </div>

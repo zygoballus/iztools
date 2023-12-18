@@ -8,7 +8,8 @@ include 'db.conf.php';
 
 $errors = [];
 $accession = null;
-$id = null;
+$playerid = null;
+$playerposition = null;
 $previd = 0;
 $nextid = 0;
 $row = null;
@@ -16,18 +17,43 @@ $host = '';
 
 parse_str( $_SERVER['QUERY_STRING'], $query );
 
-$whereClause = '`processed` = 0 and exclude = 0';
-if ( isset( $query['id'] ) && is_numeric( $query['id'] ) ) {
-	$id = $query['id'];
-	$whereClause = "`id` = " . $id;
+if ( isset( $query['player'] ) && is_numeric( $query['player'] ) ) {
+	$playerresult = mysqli_query( $link, "SELECT * FROM `players` WHERE `id` = " . $query['player'] . " LIMIT 1;" );
+	if ( $playerresult ) {
+		$row = mysqli_fetch_array($playerresult);
+		setcookie( 'playerid', $row['id'], 0, "/iztools/fleas/" );
+		setcookie( 'playername', $row['name'], 0, "/iztools/fleas/" );
+		setcookie( 'playerscore', $row['score1'], 0, "/iztools/fleas/" );
+		$playerid = $row['id'];
+		$playername = $row['name'];
+		$playerscore = $row['score1'];
+		$playerposition = $row['position'];
+	} else {
+		header( "Location: index.php" );
+	}
+} else {
+	if ( isset( $_COOKIE["playerid"] ) && isset( $_COOKIE["playername"] ) && isset( $_COOKIE["playerscore"] ) ) {
+		$playerid = $_COOKIE["playerid"];
+		$playername = $_COOKIE["playername"];
+		$playerscore = $_COOKIE["playerscore"];
+	} else {
+		header( "Location: index.php" );
+	}
+}
+
+$whereClause = '`processed` = 0 AND `exclude` = 0 AND `bad locality` = 0';
+if ( $playerposition ) {
+	$whereClause = "`id` = " . $playerposition;
+}
+if ( isset( $query['id'] ) && is_numeric( $query['id'] ) && $query['id'] > 0 ) {
+	$whereClause = "`id` = " . $query['id'];
 }
 if ( isset( $query['accession'] ) && !( preg_match( '/[^\w\-\d]/', $query['accession'] ) ) ) {
 	$accession = $query['accession'];
 	$whereClause = "`accession` LIKE '" . $accession . "'";
-	$id = null;
 }
 
-$result = mysqli_query( $link, "SELECT * FROM `traubdata` WHERE " . $whereClause . ";" );
+$result = mysqli_query( $link, "SELECT * FROM `traubdata` WHERE " . $whereClause . " LIMIT 1;" );
 if ( $result ) {
 	$row = mysqli_fetch_array($result);
 	// Set the host to the most granular taxon.
@@ -65,16 +91,28 @@ if ( isset( $query['action'] ) && $query['action'] == 'skip' && $nextid ) {
 	header( "Location: fleadatagame.php?id=" . $nextid );
 }
 
-// See if form was submitted.
-if ( $_POST && $row['id'] ) {
-	// Process POST data.
-	foreach ( $_POST['fleadata'] as $flea ) {
-		$query = "INSERT INTO `traubdataprocessed` (`originalid`, `accession`, `host`, `date`, `locality`, `country`, `stateprovince`, `sciname`, `scientificnameauthorship`, `sex`, `individualcount`, `player`) VALUES ('{$row['id']}', '{$row['accession']}', '{$flea['host']}', '{$flea['date']}', '{$flea['locality']}', '{$flea['country']}', '{$flea['stateprovince']}', '{$flea['sciname']}', '{$flea['scientificnameauthorship']}', '{$flea['sex']}', '{$flea['individualcount']}', '1');";
-		$result2 = mysqli_query( $link, $query );
-		if ( $result2 ) {
-			$query = "UPDATE `traubdata` SET `processed`=1 WHERE `id`={$row['id']} LIMIT 1;";
+if ( $row['id'] ) {
+	// See if form was submitted.
+	if ( $_POST ) {
+		$updatesuccess = true;
+		// Process POST data.
+		foreach ( $_POST['fleadata'] as $flea ) {
+			$query = "INSERT INTO `traubdataprocessed` (`originalid`, `accession`, `host`, `date`, `locality`, `country`, `stateprovince`, `sciname`, `scientificnameauthorship`, `sex`, `individualcount`, `player`) VALUES ('{$row['id']}', '{$row['accession']}', '{$flea['host']}', '{$flea['date']}', '{$flea['locality']}', '{$flea['country']}', '{$flea['stateprovince']}', '{$flea['sciname']}', '{$flea['scientificnameauthorship']}', '{$flea['sex']}', '{$flea['individualcount']}', {$playerid});";
+			$result2 = mysqli_query( $link, $query );
+			if ( !$result2 ) {
+				$updatesuccess = false;
+				$errors[] = "Inserting processed record failed.";
+				$errors[] = mysqli_error( $link );
+			}
+		}
+		if ( $updatesuccess ) {
+			$query = "UPDATE `traubdata` SET `processed`=1, `player`={$playerid} WHERE `id`={$row['id']} LIMIT 1;";
 			$result3 = mysqli_query( $link, $query );
-				if ( $result3 ) {
+			if ( $result3 ) {
+				$query = "UPDATE `players` SET `score1`=" . ++$playerscore . " WHERE `id`=" . $playerid . " LIMIT 1;";
+				$result4 = mysqli_query( $link, $query );
+				setcookie( 'playerscore', $playerscore, 0, "/iztools/fleas/" );
+				if ( $result4 ) {
 					if ( $nextid ) {
 						header( "Location: fleadatagame.php?id=" . $nextid );
 					} elseif ( $previd ) {
@@ -83,13 +121,18 @@ if ( $_POST && $row['id'] ) {
 						header( "Location: done.php" );
 					}
 				} else {
-					$errors[] = "Updating original record failed.";
+					$errors[] = "Updating player record failed.";
 					$errors[] = mysqli_error( $link );
 				}
-		} else {
-			$errors[] = "Inserting new records into database failed.";
-			$errors[] = mysqli_error( $link );
+			} else {
+				$errors[] = "Updating original record failed.";
+				$errors[] = mysqli_error( $link );
+			}
 		}
+	}
+	if ( $playerid ) {
+		$query = "UPDATE `players` SET `position`=" . $row['id'] . " WHERE `id`=" . $playerid . " LIMIT 1;";
+		mysqli_query( $link, $query );
 	}
 }
 ?>
@@ -106,6 +149,12 @@ if ( $_POST && $row['id'] ) {
 <script src="jquery-ui.min.js"></script>
 <body>
 <div id="content">
+<table id="playerinfo" border="0" cellspacing="5" width="100%">
+	<tr>
+		<td style="text-align:left; padding: 5px 8px;">Player: <?=$playername?>; Score: <?=$playerscore?></td>
+		<td style="text-align:right; padding: 5px 8px"><a href="index.php">Change Player</a></td>
+	</tr>
+</table>
 <table border="0" cellpadding="5" cellspacing="10" width="100%">
 <tr>
 <td style="text-align:left;" width="80">
@@ -113,7 +162,7 @@ if ( $_POST && $row['id'] ) {
 if ( $previd ) print( '<a href="fleadatagame.php?id=' . $row['id'] . '&action=prev"><< Prev</a>' );
 ?>
 </td>
-<td><h2 style="text-align:center;">Flea Data</h2></td>
+<td><div class="title">Flea Data Game</div></td>
 <td style="text-align:right;" width="80">
 <?php
 if ( $nextid ) print( '<a href="fleadatagame.php?id=' . $row['id'] . '&action=skip">Skip >></a>' );
