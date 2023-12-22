@@ -8,15 +8,16 @@ include 'db.conf.php';
 
 $errors = [];
 
-if ( $_POST ) {
+if ( $_POST && $_POST['playername'] ) {
 	// Process POST data.
 	$playernames = [];
 	$result = mysqli_query( $link, "SELECT * FROM `players`;" );
 	while ( $row = mysqli_fetch_array( $result ) ) {
 		$playernames[] = $row['name'];
 	}
-	if ( !in_array( $_POST['playername'], $playernames ) ) {
-		$query = "INSERT INTO `players` (`name`) VALUES ('" . $_POST['playername'] . "');";
+	$playername = mysqli_real_escape_string( $link, $_POST['playername'] );
+	if ( !in_array( $playername, $playernames ) ) {
+		$query = "INSERT INTO `players` (`name`) VALUES ('" . $playername . "');";
 		$insertresult = mysqli_query( $link, $query );
 		if ( !$insertresult ) {
 			$errors[] = "Inserting new player into database failed.";

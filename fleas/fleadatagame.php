@@ -107,13 +107,16 @@ if ( $row['id'] ) {
 			$insertsuccess = true;
 			// Process POST data.
 			foreach ( $_POST['fleadata'] as $flea ) {
+				$flea['host'] = mysqli_real_escape_string( $link, $flea['host'] );
 				if ( $flea['date'] == '' ) {
 					$date = 'NULL';
 				} else {
 					$date = "'" . $flea['date'] . "'";
 				}
-				$flea['host'] = mysqli_real_escape_string( $link, $flea['host'] );
 				$flea['sciname'] = mysqli_real_escape_string( $link, $flea['sciname'] );
+				$flea['scientificnameauthorship'] = mysqli_real_escape_string( $link, $flea['scientificnameauthorship'] );
+				$flea['country'] = mysqli_real_escape_string( $link, $flea['country'] );
+				$flea['stateprovince'] = mysqli_real_escape_string( $link, $flea['stateprovince'] );
 				$flea['locality'] = mysqli_real_escape_string( $link, $flea['locality'] );
 				$query = "INSERT INTO `traubdataprocessed` (`originalid`, `accession`, `host`, `date`, `locality`, `country`, `stateprovince`, `elevation`, `associatedcollectors`, `sciname`, `scientificnameauthorship`, `sex`, `individualcount`, `player`) VALUES ('{$row['id']}', '{$row['accession']}', '{$flea['host']}', {$date}, '{$flea['locality']}', '{$flea['country']}', '{$flea['stateprovince']}', '{$flea['elevation']}', '{$flea['associatedcollectors']}', '{$flea['sciname']}', '{$flea['scientificnameauthorship']}', '{$flea['sex']}', '{$flea['individualcount']}', {$playerid});";
 				$result2 = mysqli_query( $link, $query );

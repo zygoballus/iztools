@@ -13,6 +13,7 @@ function abbrevlookup( input ) {
 			if ( data.status ) {
 				$( "#fleaname" ).append( '<br><span class="status">Name status: ' + data.status.toLowerCase() + '</span>' );
 			}
+			$( "input.fill" ).prop( "disabled", false );
 			$( "p#fillbuttons" ).show();
 		} else {
 			$( "#fleaname" ).html( '' );
@@ -30,6 +31,9 @@ function namelookup( input ) {
 			$( "#fleaname" ).html( '<span id="sciname">' + data.name + '</span> <span id="author">' + data.authority + '</span><br><span class="status">Name status: ' + data.status + '</span>' );
 			if ( data.validName ) {
 				$( "#fleaname" ).append( '<br><span class="status">Valid name: ' + data.validName + '</span>' );
+				$( "input.fill" ).prop( "disabled", true );
+			} else {
+				$( "input.fill" ).prop( "disabled", false );
 			}
 			$( "p#fillbuttons" ).show();
 		} else {
@@ -92,7 +96,7 @@ function addRecord() {
 function filldata( arrayindex ) {
 	$( "input[name='fleadata["+arrayindex+"][sciname]']" ).val( $( "#sciname" ).text() );
 	$( "input[name='fleadata["+arrayindex+"][scientificnameauthorship]']" ).val( $( "#author" ).text() );
-	$( "input[name='submitbutton']" ).removeAttr( 'disabled' );
+	$( "input[name='submitbutton']" ).prop( "disabled", false );
 }
 
 function dwcDoc( dcTag ) {
