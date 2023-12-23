@@ -27,6 +27,11 @@ body {
 	line-height: 16pt;
 	color: #475DC1;
 }
+.warning {
+	font-size: 11pt;
+	line-height: 16pt;
+	color: #CC0000;
+}
 .traublog {
 	padding: 1em;
 	background-image: url("fleaassets/paper-texture.jpg");

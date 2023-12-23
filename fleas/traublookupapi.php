@@ -31,6 +31,7 @@ function getFlea( $abbrev ) {
 			$flea['authority'] = $row['authority'];
 			$flea['notes'] = $row['notes'];
 			$flea['status'] = $row['status'];
+			$flea['warning'] = $row['warning'];
 		}
 	} else {
 		$strErrorDesc = "Database query failed.";

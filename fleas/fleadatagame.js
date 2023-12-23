@@ -13,6 +13,9 @@ function abbrevlookup( input ) {
 			if ( data.status ) {
 				$( "#fleaname" ).append( '<br><span class="status">Name status: ' + data.status.toLowerCase() + '</span>' );
 			}
+			if ( data.warning ) {
+				$( "#fleaname" ).append( '<br><span class="warning">Warning: ' + data.warning + '</span>' );
+			}
 			$( "input.fill" ).prop( "disabled", false );
 			$( "p#fillbuttons" ).show();
 		} else {
@@ -1102,6 +1105,7 @@ source: [
 "NYC.V.",
 "O.",
 "O.B.",
+"O.C.",
 "O.C.C.",
 "O.C.D.",
 "O.D.",
@@ -1126,6 +1130,7 @@ source: [
 "OC.T.T.",
 "OCHOT.",
 "OCHOT.R.",
+"OD.",
 "OD.D.",
 "OD.M.",
 "OP.",
@@ -1319,6 +1324,7 @@ source: [
 "PM.S.",
 "PO.",
 "PO.C.",
+"PP.",
 "PP.C.",
 "PP.E.",
 "PR.",
@@ -1656,6 +1662,7 @@ source: [
 "X.V.M.",
 "X.V.V.",
 "X.VR.",
+"XD.",
 "XD.T.",
 "XI.",
 "XI.F.",
